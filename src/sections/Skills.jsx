@@ -1,45 +1,64 @@
-// src/sections/Skills.jsx
-
 import React from "react";
-import htmlLogo from "../assets/html.png";
-import cssLogo from "../assets/css.png";
-import jsLogo from "../assets/javascript.png";
-import reactLogo from "../assets/react.png";
-import tailwindLogo from "../assets/tailwindcss.png"; // add other logos similarly
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function Skills() {
   const skills = [
-    { name: "HTML", logo: htmlLogo },
-    { name: "CSS", logo: cssLogo },
-    { name: "JavaScript", logo: jsLogo },
-    { name: "React", logo: reactLogo },
-    { name: "TailwindCSS", logo: tailwindLogo },
-    // add more skills here
+    { name: "HTML", logo: "/images/html.png", level: "Intermediate" },
+    { name: "CSS", logo: "/images/css.png", level: "Intermediate" },
+    { name: "JavaScript", logo: "/images/javascript.png", level: "Intermediate" },
+    { name: "React", logo: "/images/react.png", level: "Basics → Intermediate" },
+    { name: "TailwindCSS", logo: "/images/tailwindcss.png", level: "Intermediate" },
+    { name: "SQL", logo: "/images/sql.png", level: "Basics" }
   ];
 
-  return (
- <section className="py-16 bg-slate-950" id="skills">
-  <div className="max-w-6xl mx-auto px-4">
-    <h2 className="text-3xl font-bold text-center mb-12 text-white">My Skills</h2>
+  const [isMobile, setIsMobile] = useState(false);
 
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
-      {skills.map((skill) => (
-        <div
-          key={skill.name}
-          className="flex flex-col items-center transition-transform duration-300 ease-in-out hover:scale-105 hover:-translate-y-1 hover:shadow-md"
-        >
-          <div className="w-28 h-28 flex items-center justify-center bg-gray-700 border border-gray-600">
-            <img
-              src={skill.logo}
-              alt={skill.name}
-              className="w-20 h-20 object-contain"
-            />
-          </div>
-          <p className="mt-4 text-lg font-medium text-white">{skill.name}</p>
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Function to determine slide direction based on mobile/desktop and card index
+  const getSlideX = (index) => {
+    if (!isMobile) {
+      // Desktop: cards 0,1,2 left; 3,4,5 right
+      return index < 3 ? -100 : 100;
+    } else {
+      // Mobile: 0,1 left; 2,3 right; 4,5 left
+      if ([0, 1, 4, 5].includes(index)) return -100;
+      return 100;
+    }
+  };
+
+  return (
+    <section className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 py-20" id="skills">
+      <div className="max-w-6xl mx-auto px-5">
+        <h2 className="text-4xl font-bold text-white text-center mb-12">My Skills</h2>
+
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {skills.map((skill, index) => (
+            <motion.div
+              key={skill.name}
+              initial={{ x: getSlideX(index), opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: false, amount: 0.2 }} // animate every time in view
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="bg-white/10 backdrop-blur-md rounded-2xl p-6 flex flex-col items-center shadow-lg cursor-pointer hover:shadow-gray-300 transition-all duration-500"
+            >
+              <img
+                src={skill.logo}
+                alt={skill.name}
+                className="w-20 h-20 object-contain mb-4"
+              />
+              <h3 className="text-white text-xl font-semibold mb-1">{skill.name}</h3>
+              <p className="text-gray-300">{skill.level}</p>
+            </motion.div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </div>
+    </section>
   );
 }

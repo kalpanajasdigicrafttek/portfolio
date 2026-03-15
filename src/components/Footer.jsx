@@ -34,7 +34,7 @@ function Footer() {
 
       {/* Copyright */}
       <p className="text-slate-400 text-sm">
-        © 2026 Kalpana
+        © {new Date().getFullYear()} Kalpana
       </p>
 
     </footer>

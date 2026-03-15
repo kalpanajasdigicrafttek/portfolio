@@ -1,10 +1,11 @@
 import Navbar from "./components/Navbar"
 import Home from "./sections/Home"
 import About from "./sections/About"
-import Project from "./sections/Project"
 import Contact from "./sections/Contact"
 import Footer from "./components/Footer"
 import Skills from "./sections/Skills"
+import Certificates from "./sections/Certificates"
+
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
 
       <Skills />
 
-      <Project />
+      <Certificates />
 
       <Contact />
 
