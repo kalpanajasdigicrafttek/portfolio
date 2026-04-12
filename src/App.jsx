@@ -5,6 +5,7 @@ import Contact from "./sections/Contact"
 import Footer from "./components/Footer"
 import Skills from "./sections/Skills"
 import Certificates from "./sections/Certificates"
+import Project from "./sections/Project"
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
       <Skills />
 
       <Certificates />
+
+      <Project />
 
       <Contact />
 

@@ -1,16 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 function PillNav({ items }) {
   const [active, setActive] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // 🔥 Scroll spy logic
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150;
+
+      items.forEach((item, index) => {
+        const section = document.querySelector(item.href);
+        if (!section) return;
+
+        const top = section.offsetTop;
+        const bottom = top + section.offsetHeight;
+
+        if (scrollPosition >= top && scrollPosition < bottom) {
+          setActive(index);
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [items]);
+
   return (
     <>
       {/* Navbar */}
       <div className="w-full bg-slate-900 border border-slate-700 px-6 py-3 flex justify-between items-center shadow-lg">
 
-        {/* Left Logo */}
+        {/* Logo */}
         <h1 className="text-cyan-400 font-bold text-xl">
           Kalpana
         </h1>
